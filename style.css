@@ -18,6 +18,9 @@ li {
 :root{
     --default-padding: 28px
 }
+body{
+    background-color: red;
+}
 header {
     background-color: black;
     display: flex;
@@ -84,9 +87,81 @@ section{
     padding: var(--default-padding);
 }
 .team-builder{
+    background-image: url(./img/bg-team-builder.svg);
+    background-repeat: no-repeat;
+    background-position: top right;
+    background-size: contain;
     background-color: white;
     display: flex;
+    flex-direction: column;
+    gap: 32px;
+    width: 100vw;
+    position: relative;
 }
 .nome-time{
+    background-color: white;
     display: flex;
+    position: relative;
+    border: 2px solid #000;
+    width: 424px;
+    height: 60px;
+    border-radius: 25px ;
+    padding-left: 16px;
+    gap: 6px;
+}
+.nome-time img{
+    width: 50px;
+    height: 50px;
+}
+.nome-time input{
+    border: none;
+    width: 80vw;
+    border-radius: 20px;
+}
+.bg{
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+}
+.bg-pokeball{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 340px;
+    top: 0;
+
+    z-index: 1;
+}
+.team{
+    border: 2px solid black;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding-block: 8px;
+    border-radius: 32px;
+    background-color: #414040;
+    gap: 20px;
+}
+.card-pokemon{
+    position: relative;
+    border: 2px solid #ED5564;
+    border-radius: 20px;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    flex-direction: column;
+    max-width: 108px;
+    height: 132px;
+    color: white;
+    gap: 20px;
+}
+.card-pokemon img{
+    width: 64px;
+}
+.card-pokemon p{
+    padding-left: 20px;
 }
