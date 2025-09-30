@@ -15,12 +15,14 @@ li {
     list-style: none;
 }
 
-:root{
+:root {
     --default-padding: 28px
 }
-body{
+
+body {
     background-color: red;
 }
+
 header {
     background-color: black;
     display: flex;
@@ -57,7 +59,7 @@ header {
 
 .menu {
     position: absolute;
-    min-width: 150px;
+    min-width: 250px;
     top: 110%;
     right: 0;
     visibility: hidden;
@@ -72,68 +74,85 @@ header {
 .container-menu:hover .menu {
     visibility: visible;
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
+    border: 2px solid black;
 }
-.menu li{
+
+.menu li {
+    width: 100%;
     transition: .5s;
+    border-radius: 8px;
 }
-.menu li a:hover{
+
+.menu li a:hover {
     background-color: #ffffff8e;
+    border-radius: 4px;
     box-shadow: 0 4px 4px #0004;
     width: 100%;
 }
-section{
+
+section {
     height: 100dvh;
     padding: var(--default-padding);
 }
-.team-builder{
+
+.team-builder {
     background-image: url(./img/bg-team-builder.svg);
     background-repeat: no-repeat;
     background-position: top right;
     background-size: contain;
     background-color: white;
     display: flex;
+    justify-items: center;
     flex-direction: column;
     gap: 32px;
-    width: 100vw;
+    width: 100%;
     position: relative;
+    height: auto;
 }
-.nome-time{
+
+.nome-time {
     background-color: white;
     display: flex;
     position: relative;
     border: 2px solid #000;
     width: 424px;
     height: 60px;
-    border-radius: 25px ;
+    border-radius: 25px;
     padding-left: 16px;
-    gap: 6px;
+    gap: 16px;
+    align-items: center;
 }
-.nome-time img{
+
+.nome-time img {
     width: 50px;
     height: 50px;
 }
-.nome-time input{
+
+.nome-time input {
     border: none;
-    width: 80vw;
+    width: 100%;
     border-radius: 20px;
+    height: 100%;
 }
-.bg{
+
+.bg {
     width: 100vw;
     display: flex;
     justify-content: center;
+    justify-items: center;
 }
-.bg-pokeball{
+
+.bg-pokeball {
     position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
-    max-width: 340px;
-    top: 0;
-
+    max-width: 300px;
     z-index: 1;
 }
-.team{
+
+.team {
     border: 2px solid black;
     position: relative;
     display: flex;
@@ -143,8 +162,11 @@ section{
     border-radius: 32px;
     background-color: #414040;
     gap: 20px;
+    height: auto;
+    width: 100%;
 }
-.card-pokemon{
+
+.card-pokemon {
     position: relative;
     border: 2px solid #ED5564;
     border-radius: 20px;
@@ -159,9 +181,68 @@ section{
     color: white;
     gap: 20px;
 }
-.card-pokemon img{
+
+.card-pokemon img {
     width: 64px;
 }
-.card-pokemon p{
+
+.card-pokemon p {
     padding-left: 20px;
+}
+
+.status-time {
+    width: 100%;
+    height: auto;
+    background-image: url(./img/bg-status-time.svg);
+    background-repeat: no-repeat;
+    background-position: bottom left;
+    background-size: contain;
+    background-color: #8F8F8F;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    position: relative;
+}
+
+.header-sessao {
+    display: flex;
+    justify-content: center;
+}
+
+.titulo-sessao {
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 25px;
+    padding-left: var(--default-padding);
+    display: flex;
+    width: 424px;
+    height: 60px;
+    gap: 48px;
+    align-items: center;
+}
+
+.titulo-sessao img {
+    width: 50px;
+    height: 50px;
+}
+
+.table {
+    position: relative;
+    overflow-x: auto;
+}
+
+table {
+    min-width: 700px;
+    border-collapse: collapse;
+}
+
+td,
+th {
+    border: 1px solid black;
+    padding: 10px 20px;
+}
+.move-set{
+    width: 100vw;
+    height: 700px;
+    background-color: #222222;
 }
