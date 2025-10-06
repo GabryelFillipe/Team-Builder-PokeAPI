@@ -149,22 +149,23 @@ section {
     display: flex;
     justify-content: center;
     align-items: center;
-    max-width: 300px;
+    width: 300px;
     z-index: 1;
 }
 
 .team {
     border: 2px solid black;
     position: relative;
-    display: flex;
-    flex-wrap: wrap;
+    display: column;
+    columns: 3;
     justify-content: space-around;
     padding-block: 8px;
     border-radius: 32px;
     background-color: #414040;
-    gap: 20px;
+    gap: 10px;
     height: auto;
     width: 100%;
+    padding-left: 16px;
 }
 
 .card-pokemon {
@@ -177,10 +178,12 @@ section {
     justify-items: center;
     align-items: center;
     flex-direction: column;
-    max-width: 108px;
-    height: 132px;
+    width: 108px;
+    height: 164px;
     color: white;
     gap: 20px;
+    margin-bottom: 12px;
+    
 }
 
 .card-pokemon img {
@@ -200,6 +203,7 @@ section {
     background-size: contain;
     background-color: #8F8F8F;
     display: flex;
+
     flex-direction: column;
     gap: 32px;
     position: relative;
@@ -230,6 +234,8 @@ section {
 .table {
     position: relative;
     overflow-x: auto;
+
+
 }
 
 table {
@@ -243,7 +249,232 @@ th {
     padding: 10px 20px;
 }
 .move-set{
-    width: 100vw;
-    height: 700px;
+    width: 100%;
+    height: auto;
     background-color: #222222;
+    display: flex;
+    gap: 24px;
+    flex-direction: column;
+    align-items: center;
+}
+.conteudo-sessao{
+    background: #000000;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.3) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-radius: 32px;
+    height: auto;
+    padding-block: 24px;
+    width: 100%;
+    gap: 32px;
+}
+.time-escolhido{
+    background-color: white;
+    border-radius: 20px;
+    height: 168px;
+    width: 95%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-block: 12px;
+    gap: 24px;
+}
+.time-name{
+    background-color: black;
+    border-radius: 20px;
+    border: 2px solid #ED5564;
+    width: 283px;
+    height: 36px;
+}
+.time-name p{
+    font-size: 24px;
+    color: white;
+}
+.pokemon-lista{
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border: 2px solid #ED5564;
+    background-color: #D9D9D9;
+    border-radius: 20px;
+    padding-inline: 4px;
+    margin-bottom: 4px;
+    width: 150px;
+}
+.pokemon-lista img{
+    width: 20px;
+    height: 20px;
+}
+.pokemon-lista span{
+    font-size: 8px;
+}
+.tipos{
+    display: flex;
+    gap: 4px;
+}
+.tipo-pokemon{
+    font-size: 8px;
+    background-color: #FF69BC;
+    padding-block: 4px;
+    padding-inline: 4px;
+    border-radius: 4px;
+}
+.time{
+    display: column;
+    columns: 2;
+    gap: 32px;
+    width: 90%;
+    /* padding-right: 12px; */
+}
+.move-set-pokemon{
+    background-color: #00000021;
+    border: 2px solid #ED5564;
+    border-radius: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    height: 250px;
+    gap: 24px;
+    padding-block: 16px;
+    padding-inline: 16px;
+}
+.pokemon-move{
+    background-color: white;
+    border: 2px solid #ED5564;
+    border-radius: 20px;
+    display: flex;
+    height: 40px;
+    text-align: center;
+    align-items: center;
+    padding-block: 8px;
+    padding-inline: 8px;
+}
+
+.moves{
+    display: column;
+    columns: 2;
+    height: 100%;
+}
+.move{
+    border: 2px solid #ED5564;
+    border-radius: 16px;
+    background-color: #D9D9D9;
+    height: 44px;
+    margin-bottom: 24px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+.move span{
+    font-size: 12px;
+}
+@media (min-width: 768px){
+    .team{
+        display: column;
+        padding-left: 16px;
+    }
+    .bg-pokeball{
+        width: 532px;
+    }
+    .card-pokemon{
+        width: 200px;
+        height: 250px;
+    }
+    .card-pokemon img{
+        width: 120px;
+    }
+    .conteudo-sessao{
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 4;
+        padding-inline: 16px;
+    }
+    .time-escolhido{
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        width: 50%;
+    }
+    .time{
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 4px;
+        gap: 0;
+    }
+    .pokemon-lista{
+        width: 264px;
+        justify-content: space-around;
+        height: 32px;
+    }
+    .pokemon-lista span{
+        font-size: 16px;
+    }
+    .pokemon-lista img{
+        width: 28px;
+        height: 28px
+    }
+    .move-set-pokemon{
+        width: 50%;
+        height: 200px;
+    }
+    .move{
+        width: 150px;
+    }
+    .move span{
+        font-size: 16px;
+    }
+}
+@media (min-width: 1024px){
+    .team{
+        display: column;
+        padding-left: 40px;
+    }
+    .card-pokemon{
+        width: 250px;
+    }
+    .conteudo-sessao{
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 4;
+        padding-inline: 16px;
+    }
+    .time-escolhido{
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        width: 50%;
+    }
+    .time{
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 4px;
+        gap: 0;
+    }
+    .pokemon-lista{
+        width: 264px;
+        justify-content: space-around;
+        height: 32px;
+    }
+    .pokemon-lista span{
+        font-size: 16px;
+    }
+    .pokemon-lista img{
+        width: 28px;
+        height: 28px
+    }
+    .move-set-pokemon{
+        width: 50%;
+        height: 200px;
+    }
+    .move{
+        width: 150px;
+    }
+    .move span{
+        font-size: 16px;
+    }
 }
