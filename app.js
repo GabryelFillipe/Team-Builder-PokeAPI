@@ -1,9 +1,6 @@
 'use strict';
 
-let listaDeTodosPokemons = []
-
 let cardClicado = null
-
 
 
 async function buscarTodosPokemons() {
@@ -11,193 +8,188 @@ async function buscarTodosPokemons() {
 
     const overlayCarregando = criarOverlayDeCarregamento()
     try {
-        const respostaLista = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1025');
+        const respostaLista = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1025')
+
         const listaInicial = await respostaLista.json()
 
-        
-        const promessasDeDetalhes = listaInicial.results.map(pokemon => fetch(pokemon.url).then(res => res.json()));
-        listaDeTodosPokemons = await Promise.all(promessasDeDetalhes);
-        
-        console.log('Todos os Pokémon foram carregados!');
-        console.log(listaDeTodosPokemons)
-        return listaDeTodosPokemons
-        
+        const promessasDeDetalhes = listaInicial.results.map(pokemon => fetch(pokemon.url).then(res => res.json()))
+
+        const listaCompleta = await Promise.all(promessasDeDetalhes)
+
+        console.log('Todos os Pokémon foram carregados!')
+
+        return listaCompleta
+
     } catch (error) {
-        console.error("Falha ao buscar Pokémon:", error);
-        alert("Não foi possível carregar os dados dos Pokémon. Verifique sua conexão ou tente novamente mais tarde.");
+        console.error("Falha ao buscar Pokémon:", error)
+        alert("Não foi possível carregar os dados dos Pokémon. Verifique sua conexão ou tente novamente mais tarde.")
+        return []
     } finally {
 
-        overlayCarregando.remove();
+        overlayCarregando.remove()
     }
-    return listaDeTodosPokemons
 }
 
 function criarOverlayDeCarregamento() {
-        const overlay = document.createElement('div');
-        overlay.className = 'loading-overlay';
-    
-        const spinner = document.createElement('div');
-        spinner.className = 'spinner';
-    
-        const texto = document.createElement('p');
-        texto.textContent = 'Carregando Pokédex...';
-    
-        overlay.appendChild(spinner);
-        overlay.appendChild(texto);
-    
-        document.body.appendChild(overlay);
-        return overlay;
+    const overlay = document.createElement('div')
+    overlay.className = 'loading-overlay'
+
+    const spinner = document.createElement('div')
+    spinner.className = 'spinner'
+
+    const texto = document.createElement('p')
+    texto.textContent = 'Carregando Pokédex...'
+
+    overlay.appendChild(spinner)
+    overlay.appendChild(texto)
+
+    document.body.appendChild(overlay)
+    return overlay;
+}
+
+
+async function inicializarCards() {
+    const cards = document.querySelectorAll('.card-pokemon')
+
+
+    const listaDeTodosPokemons = await iniciarApp()
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+
+            cardClicado = card
+            if (listaDeTodosPokemons) {
+                console.log(listaDeTodosPokemons)
+                const pokemons = listaDeTodosPokemons.pokemons
+                abrirModalSelecao(pokemons)
+            } else {
+                alert("Aguarde, os Pokémon ainda estão sendo carregados!")
+            }
+        });
+    });
+}
+
+
+function abrirModalSelecao(listaDePokemons) {
+
+    const modalFundo = document.createElement('div')
+    modalFundo.classList.add('modal-fundo')
+
+    const modalContainer = document.createElement('div')
+    modalContainer.classList.add('modal-container')
+
+
+    const barraDeBusca = document.createElement('input')
+    barraDeBusca.type = 'search'
+    barraDeBusca.placeholder = 'Pesquisar Pokémon...'
+    barraDeBusca.classList.add('modal-barra-busca')
+
+
+    const cardsWrapper = document.createElement('div')
+    cardsWrapper.classList.add('modal-cards-wrapper')
+
+    listaDePokemons.forEach(pokemon => {
+        const cardDoPokemon = criarCardParaModal(pokemon)
+        cardsWrapper.appendChild(cardDoPokemon)
+    })
+
+
+    barraDeBusca.addEventListener('input', () => {
+
+        const termoBusca = barraDeBusca.value.toLowerCase()
+
+
+        const todosOsCards = cardsWrapper.querySelectorAll('.pokemon-modal')
+
+        todosOsCards.forEach(card => {
+
+            const nomePokemon = card.dataset.nome
+
+
+            if (nomePokemon.includes(termoBusca)) {
+                card.style.display = 'block'
+            } else {
+                card.style.display = 'none'
+            }
+        })
+    })
+
+
+    modalContainer.appendChild(barraDeBusca)
+    modalContainer.appendChild(cardsWrapper)
+    modalFundo.appendChild(modalContainer)
+    document.body.appendChild(modalFundo)
+
+
+    modalFundo.addEventListener('click', (e) => {
+        if (e.target === modalFundo) {
+            modalFundo.remove()
+        }
+    })
+}
+
+function criarCardParaModal(pokemon) {
+    const cardPokemon = document.createElement('div')
+    cardPokemon.classList.add('pokemon-modal')
+
+    cardPokemon.dataset.nome = pokemon.name.toLowerCase()
+
+    const pokemonImg = document.createElement('img')
+    pokemonImg.classList.add('img-pokemon-modal')
+
+
+    pokemonImg.src = pokemon.sprites?.front_default || 'url_da_sua_imagem_padrao.png'
+
+
+    pokemonImg.alt = pokemon.name
+
+    const pokemonNome = document.createElement('p')
+    pokemonNome.textContent = pokemon.name
+
+    cardPokemon.appendChild(pokemonImg)
+    cardPokemon.appendChild(pokemonNome)
+
+    cardPokemon.addEventListener('click', () => {
+        selecionarPokemonParaTime(pokemon)
+        const modalFundo = document.querySelector('.modal-fundo')
+        if (modalFundo) {
+            modalFundo.remove()
+        }
+    })
+
+    return cardPokemon
+}
+
+
+function selecionarPokemonParaTime(pokemon) {
+    console.log(`${pokemon.name} foi selecionado para o card:`, cardClicado)
+    console.log(`Função 'selecionarPokemonParaTime' chamada com: ${pokemon.name}`)
+    console.log('O card do time (cardClicado) que deve ser atualizado é:', cardClicado)
+
+    if (cardClicado) {
+
+        const imgDoCard = cardClicado.querySelector('.pokemonTime')
+        const nomeDoCard = cardClicado.querySelector('.nomePokemonTime')
+
+        if (imgDoCard) imgDoCard.src = pokemon.sprites.front_default
+        if (nomeDoCard) nomeDoCard.textContent = pokemon.name
     }
-
-// function limparElemento(elemento) {
-//     while (elemento.firstChild) {
-//         elemento.removeChild(elemento.firstChild);
-//     }
-// }
+}
 
 
-// function abrirModalDeSelecao() {
+document.addEventListener('DOMContentLoaded', async () => {
 
-//     const modalExistente = document.getElementById('modal-pokemons')
-//     if (modalExistente) modalExistente.remove()
+    await inicializarCards()
+})
 
-//     const overlay = document.createElement('div')
-//     overlay.className = 'modal-overlay'
+async function iniciarApp() {
+    const listaDePokemons = await buscarTodosPokemons();
 
-//     const modal = document.createElement('div')
-//     modal.id = 'modal-pokemons'
-//     modal.className = 'modal-content'
-
-
-//     const modalHeader = document.createElement('div')
-//     modalHeader.className = 'modal-header'
-//     const titulo = document.createElement('h2')
-//     titulo.textContent = 'Escolha um Pokémon'
-//     const botaoFechar = document.createElement('button')
-//     botaoFechar.className = 'close-button'
-//     botaoFechar.textContent = '×'
-//     modalHeader.appendChild(titulo)
-//     modalHeader.appendChild(botaoFechar)
-
-
-//     const modalBody = document.createElement('div')
-//     modalBody.className = 'modal-body'
-//     const barraDeBusca = document.createElement('input')
-//     barraDeBusca.type = 'text'
-//     barraDeBusca.className = 'search-bar'
-//     barraDeBusca.placeholder = 'Buscar Pokémon...'
-//     const listaContainer = document.createElement('div')
-//     listaContainer.className = 'pokemon-list'
-//     modalBody.appendChild(barraDeBusca)
-//     modalBody.appendChild(listaContainer)
-
-
-//     modal.appendChild(modalHeader)
-//     modal.appendChild(modalBody)
-//     document.body.appendChild(overlay)
-//     document.body.appendChild(modal)
-
-//     const fecharModal = () => {
-//         modal.remove()
-//         overlay.remove()
-//     };
-
-//     overlay.addEventListener('click', fecharModal)
-//     botaoFechar.addEventListener('click', fecharModal)
-
-
-//     popularListaPokemon()
-//     ativarBuscaPokemon()
-// }
-
-
-// function popularListaPokemon(lista = listaDeTodosPokemons) {
-    
-    
-//     const containerLista = document.querySelector('.pokemon-list')
-//     if (!containerLista) 
-//         return limparElemento(containerLista)
-
-//     if (lista.length === 0) {
-//         const mensagemVazio = document.createElement('p');
-//         mensagemVazio.textContent = 'Nenhum Pokémon encontrado.'
-//         containerLista.appendChild(mensagemVazio);
-//         return
-//     }
-//     const fragmento = document.createDocumentFragment()
-
-//     lista.forEach(pokemon => {
-//         const item = document.createElement('div')
-//         item.className = 'pokemon-list-item'
-
-        
-//         const imagem = document.createElement('img')
-//         imagem.src = pokemon.sprites.front_default || './img/pokeball-fundo.png'
-//         imagem.alt = pokemon.name;
-//         imagem.loading = 'lazy';
-
-//         const nome = document.createElement('span');
-//         nome.textContent = pokemon.name;
-
-//         item.appendChild(imagem);
-//         item.appendChild(nome);
-//         item.addEventListener('click', () => selecionarPokemon(pokemon))
-//         fragmento.appendChild(item)
-//     })
-
-//     containerLista.appendChild(fragmento)
-// }
-
-
-// function ativarBuscaPokemon() {
-//     const inputBusca = document.querySelector('.search-bar');
-//     if (!inputBusca) return;
-
-//     inputBusca.addEventListener('input', (evento) => {
-//         const termoBuscado = evento.target.value.toLowerCase();
-//         const pokemonsFiltradros = listaDeTodosPokemons.filter(pokemon => {
-//             return pokemon.name.toLowerCase().includes(termoBuscado);
-//         });
-//         popularListaPokemon(pokemonsFiltradros);
-//     });
-// }
-
-
-// function selecionarPokemon(pokemon) {
-//     if (cardClicado) {
-//         const imgDoCard = cardClicado.querySelector('img');
-//         const pDoCard = cardClicado.querySelector('p');
-//         imgDoCard.src = pokemon.sprites.front_default;
-//         pDoCard.textContent = pokemon.name;
-
-
-//         cardClicado.dataset.pokemonId = pokemon.id;
-//     }
-
-//     const modal = document.getElementById('modal-pokemons');
-//     const overlay = document.querySelector('.modal-overlay');
-//     if (modal) modal.remove();
-//     if (overlay) overlay.remove();
-// }
-
-// function inicializarCards() {
-//     const cards = document.querySelectorAll('.card-pokemon');
-//     cards.forEach(card => {
-//         card.addEventListener('click', () => {
-//             cardClicado = card;
-//             if (listaDeTodosPokemons.length > 0) {
-//                 abrirModalDeSelecao();
-//             } else {
-//                 alert("Aguarde, os Pokémon ainda estão sendo carregados!");
-//             }
-//         })
-//     })
-// }
-
-
-
-// // document.addEventListener('DOMContentLoaded', async () => {
-// //     await buscarTodosPokemons()
-// //     inicializarCards()
-// // })
-buscarTodosPokemons()
+    let jsonPokemos = {
+        autor: "Gabryel Fillipe",
+        versao: "1.0",
+        data: new Date(),
+        pokemons: listaDePokemons
+    }
+    return jsonPokemos
+}
