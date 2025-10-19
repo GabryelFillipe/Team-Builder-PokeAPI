@@ -357,6 +357,7 @@ th {
 .tipos {
     display: flex;
     gap: 4px;
+    border-radius: 10px;
 }
 
 .tipo-pokemon {
@@ -756,21 +757,21 @@ th {
 }
 
 /* Adicionando cores de fundo para os tipos dos pokemons */
-.tipo-normal { background-color: var(--tipo-normal); }
-.tipo-fire { background-color: var(--tipo-fire); color: var(--texto-claro); }
-.tipo-water { background-color: var(--tipo-water); color: var(--texto-claro); }
-.tipo-grass { background-color: var(--tipo-grass); }
+.tipo-normal { background-color: var(--tipo-normal);  border-radius: 4px; }
+.tipo-fire { background-color: var(--tipo-fire); color: var(--texto-claro); border-radius: 4px; }
+.tipo-water { background-color: var(--tipo-water); color: var(--texto-claro);  border-radius: 4px; }
+.tipo-grass { background-color: var(--tipo-grass);  border-radius: 4px;}
 .tipo-electric { background-color: var(--tipo-electric); }
 .tipo-ice { background-color: var(--tipo-ice); }
-.tipo-fighting { background-color: var(--tipo-fighting); color: var(--texto-claro); }
-.tipo-poison { background-color: var(--tipo-poison); color: var(--texto-claro); }
-.tipo-ground { background-color: var(--tipo-ground); }
-.tipo-flying { background-color: var(--tipo-flying); }
-.tipo-psychic { background-color: var(--tipo-psychic); }
-.tipo-bug { background-color: var(--tipo-bug); }
-.tipo-rock { background-color: var(--tipo-rock); }
-.tipo-ghost { background-color: var(--tipo-ghost); color: var(--texto-claro); }
-.tipo-dragon { background-color: var(--tipo-dragon); color: var(--texto-claro); }
-.tipo-dark { background-color: var(--tipo-dark); color: var(--texto-claro); }
-.tipo-steel { background-color: var(--tipo-steel); }
-.tipo-fairy { background-color: var(--tipo-fairy); }
+.tipo-fighting { background-color: var(--tipo-fighting); color: var(--texto-claro); border-radius: 4px; }
+.tipo-poison { background-color: var(--tipo-poison); color: var(--texto-claro); border-radius: 4px;}
+.tipo-ground { background-color: var(--tipo-ground); border-radius: 4px;}
+.tipo-flying { background-color: var(--tipo-flying); border-radius: 4px;}
+.tipo-psychic { background-color: var(--tipo-psychic); border-radius: 4px;}
+.tipo-bug { background-color: var(--tipo-bug); border-radius: 4px;}
+.tipo-rock { background-color: var(--tipo-rock); border-radius: 4px;}
+.tipo-ghost { background-color: var(--tipo-ghost); color: var(--texto-claro); border-radius: 4px;}
+.tipo-dragon { background-color: var(--tipo-dragon); color: var(--texto-claro); border-radius: 4px;}
+.tipo-dark { background-color: var(--tipo-dark); color: var(--texto-claro); border-radius: 4px;}
+.tipo-steel { background-color: var(--tipo-steel); border-radius: 4px;}
+.tipo-fairy { background-color: var(--tipo-fairy); border-radius: 4px;}
