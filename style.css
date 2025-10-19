@@ -16,7 +16,29 @@ li {
 }
 
 :root {
-    --default-padding: 28px
+    --default-padding: 28px;
+
+    --tipo-normal: #A8A878;
+    --tipo-fire: #F08030;
+    --tipo-water: #6890F0;
+    --tipo-grass: #78C850;
+    --tipo-electric: #F8D030;
+    --tipo-ice: #98D8D8;
+    --tipo-fighting: #C03028;
+    --tipo-poison: #A040A0;
+    --tipo-ground: #E0C068;
+    --tipo-flying: #A890F0;
+    --tipo-psychic: #F85888;
+    --tipo-bug: #A8B820;
+    --tipo-rock: #B8A038;
+    --tipo-ghost: #705898;
+    --tipo-dragon: #7038F8;
+    --tipo-dark: #705848;
+    --tipo-steel: #B8B8D0;
+    --tipo-fairy: #EE99AC;
+
+    --texto-claro: #FFFFFF;
+    --texto-escuro: #333333;
 }
 
 body {
@@ -107,10 +129,10 @@ section {
     display: flex;
     justify-items: center;
     flex-direction: column;
-    /* align-items: center; */
     gap: 32px;
     width: 100%;
     position: relative;
+    padding-block: 16px;
     height: auto;
 }
 
@@ -214,6 +236,7 @@ section {
     background-position: bottom left;
     background-size: contain;
     background-color: #8F8F8F;
+    padding-block: 16px;
     display: flex;
     flex-direction: column;
     gap: 32px;
@@ -349,7 +372,6 @@ th {
     columns: 2;
     gap: 32px;
     width: 90%;
-    /* padding-right: 12px; */
 }
 
 .move-set-pokemon {
@@ -434,7 +456,6 @@ th {
     }
 }
 
-/* --- Estilos do Modal de Seleção --- */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -519,7 +540,6 @@ th {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     position: fixed;
     top: 0;
     left: 0;
@@ -538,7 +558,6 @@ th {
     max-height: 80vh;
     overflow-y: auto;
     display: flex;
-    /* flex-direction: column; */
     flex-wrap: wrap;
     gap: 10px;
     justify-content: center;
@@ -580,6 +599,22 @@ th {
     gap: 10px;
     justify-content: center;
     padding-top: 5px; 
+}
+
+.tipos-tabela{
+    border-radius: 10px;
+}
+
+.modal-tipo-tag, 
+.tipos-tabela p { 
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: capitalize;
+    margin: 2px;
+    color: var(--texto-claro); 
 }
 
 @media (min-width: 768px) {
@@ -719,3 +754,23 @@ th {
             align-items: center;
     }
 }
+
+/* Adicionando cores de fundo para os tipos dos pokemons */
+.tipo-normal { background-color: var(--tipo-normal); }
+.tipo-fire { background-color: var(--tipo-fire); color: var(--texto-claro); }
+.tipo-water { background-color: var(--tipo-water); color: var(--texto-claro); }
+.tipo-grass { background-color: var(--tipo-grass); }
+.tipo-electric { background-color: var(--tipo-electric); }
+.tipo-ice { background-color: var(--tipo-ice); }
+.tipo-fighting { background-color: var(--tipo-fighting); color: var(--texto-claro); }
+.tipo-poison { background-color: var(--tipo-poison); color: var(--texto-claro); }
+.tipo-ground { background-color: var(--tipo-ground); }
+.tipo-flying { background-color: var(--tipo-flying); }
+.tipo-psychic { background-color: var(--tipo-psychic); }
+.tipo-bug { background-color: var(--tipo-bug); }
+.tipo-rock { background-color: var(--tipo-rock); }
+.tipo-ghost { background-color: var(--tipo-ghost); color: var(--texto-claro); }
+.tipo-dragon { background-color: var(--tipo-dragon); color: var(--texto-claro); }
+.tipo-dark { background-color: var(--tipo-dark); color: var(--texto-claro); }
+.tipo-steel { background-color: var(--tipo-steel); }
+.tipo-fairy { background-color: var(--tipo-fairy); }

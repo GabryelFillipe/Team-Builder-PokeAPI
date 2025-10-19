@@ -2,7 +2,7 @@
 
 let cardClicado = null
 
-
+// Função para buscar todos os pokemons registrados na PokeAPI
 async function buscarTodosPokemons() {
     console.log('Buscando a lista de Pokémon...')
 
@@ -30,6 +30,7 @@ async function buscarTodosPokemons() {
     }
 }
 
+// Função para criar um efeito de carregamento enquanto carrega a lista de pokemons
 function criarOverlayDeCarregamento() {
     const overlay = document.createElement('div')
     overlay.className = 'loading-overlay'
@@ -47,7 +48,7 @@ function criarOverlayDeCarregamento() {
     return overlay;
 }
 
-
+// Função responsavel por iniciar os cards antes de monstar o time
 async function inicializarCards() {
     const cards = document.querySelectorAll('.card-pokemon')
 
@@ -69,7 +70,7 @@ async function inicializarCards() {
     });
 }
 
-
+//Função responsavel por abrir e criar o modal com os pokemons a serem escolhidos
 function abrirModalSelecao(listaDePokemons) {
 
     const modalFundo = document.createElement('div')
@@ -128,6 +129,7 @@ function abrirModalSelecao(listaDePokemons) {
     })
 }
 
+// Função responsavel por criar os cards dos pokemons que iram para o modal de pokemons
 function criarCardParaModal(pokemon) {
     const cardPokemon = document.createElement('div')
     cardPokemon.classList.add('pokemon-modal')
@@ -146,11 +148,14 @@ function criarCardParaModal(pokemon) {
     const pokemonNome = document.createElement('p')
     pokemonNome.textContent = pokemon.name
 
+    const tiposElemento = criarTiposPokemon(pokemon.types)
+
     cardPokemon.appendChild(pokemonImg)
     cardPokemon.appendChild(pokemonNome)
+    cardPokemon.appendChild(tiposElemento)
 
-    cardPokemon.addEventListener('click', () => {
-        selecionarPokemonParaTime(pokemon)
+    cardPokemon.addEventListener('click', async () => {
+        await selecionarPokemonParaTime(pokemon)
         const modalFundo = document.querySelector('.modal-fundo')
         if (modalFundo) {
             modalFundo.remove()
@@ -160,11 +165,138 @@ function criarCardParaModal(pokemon) {
     return cardPokemon
 }
 
+// Função responsavel por buscar o tipo de um pokemon
+function criarTiposPokemon(tiposArray) {
+    const tiposContainer = document.createElement('div')
+    tiposContainer.classList.add('modal-tipos')
 
-function selecionarPokemonParaTime(pokemon) {
-    console.log(`${pokemon.name} foi selecionado para o card:`, cardClicado)
-    console.log(`Função 'selecionarPokemonParaTime' chamada com: ${pokemon.name}`)
-    console.log('O card do time (cardClicado) que deve ser atualizado é:', cardClicado)
+    tiposArray.forEach(tipoInfo => {
+        const nomeTipo = document.createElement('span')
+        nomeTipo.textContent = tipoInfo.type.name
+
+
+        nomeTipo.classList.add('modal-tipo-tag')
+        nomeTipo.classList.add(`tipo-${tipoInfo.type.name}`)
+
+        tiposContainer.appendChild(nomeTipo)
+    })
+
+    return tiposContainer
+}
+
+function criarTagsDeTipoPorNome(arrayDeNomes) {
+    const container = document.createElement('div')
+
+    if (!arrayDeNomes || arrayDeNomes.length === 0 || arrayDeNomes[0] === 'N/A') {
+        container.textContent = 'N/A'
+        return container
+    }
+
+    arrayDeNomes.forEach(nome => {
+        const spanTag = document.createElement('span')
+        spanTag.textContent = nome
+        spanTag.classList.add('modal-tipo-tag')
+        spanTag.classList.add(`tipo-${nome}`)
+        container.appendChild(spanTag)
+    })
+    return container
+
+}
+// Função responsavel por criar a tabela de status dos pokemons
+async function criarTabelaStatus(pokemon, cardDoTime) {
+
+    const pokemonTableBody = document.getElementById('pokemon-table')
+    if (!pokemonTableBody) {
+        console.error('ERRO: <tbody> com ID "pokemon-table-body" não foi encontrado!')
+        return
+    }
+
+    const rowId = `row-${cardDoTime.id}`
+
+    // Remove uma linha caso ela exista
+    const linhaExistente = document.getElementById(rowId)
+    if (linhaExistente) {
+        linhaExistente.remove()
+    }
+
+    const tr = document.createElement('tr')
+    tr.id = rowId
+
+    const tdImg = document.createElement('td')
+
+    const pokemonImg = document.createElement('img')
+    pokemonImg.src = pokemon.sprites?.front_default || 'url_da_sua_imagem_padrao.png'
+    pokemonImg.alt = pokemon.name
+    tdImg.appendChild(pokemonImg)
+    tr.appendChild(tdImg)
+
+
+    const tdTipos = document.createElement('td')
+    const tiposContainer = document.createElement('div')
+    tiposContainer.classList.add('tipos-tabela')
+
+    pokemon.types.forEach(tipoInfo => {
+
+        const nomeTipo = document.createElement('p')
+        nomeTipo.textContent = tipoInfo.type.name
+
+        nomeTipo.classList.add(`tipo-${tipoInfo.type.name}`)
+        tiposContainer.appendChild(nomeTipo)
+    })
+
+    tdTipos.appendChild(tiposContainer)
+    tr.appendChild(tdTipos)
+
+    const tdForcaAtaque = document.createElement('td')
+    const tdFraquezaAtaque = document.createElement('td')
+    const tdResistencia = document.createElement('td')
+    const tdFraquezaDefesa = document.createElement('td')
+    const tdImunidade = document.createElement('td')
+
+    try {
+
+        const urlDoTipo = pokemon.types[0].type.url
+        const respostaTipo = await fetch(urlDoTipo)
+        const dadosDoTipo = await respostaTipo.json()
+        const damageRelations = dadosDoTipo.damage_relations
+
+        const fraquezasDef = damageRelations.double_damage_from.map(tipo => tipo.name)
+        const resistDef = damageRelations.half_damage_from.map(tipo => tipo.name)
+        const imuneDef = damageRelations.no_damage_from.map(tipo => tipo.name)
+        const forcaAtk = damageRelations.double_damage_to.map(tipo => tipo.name)
+        const fraquezasAtk = damageRelations.half_damage_to.map(tipo => tipo.name)
+
+        tdFraquezaDefesa.appendChild(criarTagsDeTipoPorNome(fraquezasDef))
+        tdResistencia.appendChild(criarTagsDeTipoPorNome(resistDef))
+        tdImunidade.appendChild(criarTagsDeTipoPorNome(imuneDef))
+        tdForcaAtaque.appendChild(criarTagsDeTipoPorNome(forcaAtk))
+        tdFraquezaAtaque.appendChild(criarTagsDeTipoPorNome(fraquezasAtk))
+
+
+    } catch (error) {
+        console.error("Falha ao buscar relações de dano:", error)
+
+        tdFraquezaDefesa.textContent = 'Erro'
+        tdResistencia.textContent = 'Erro'
+        tdImunidade.textContent = 'Erro'
+        tdForcaAtaque.textContent = 'Erro'
+        tdFraquezaAtaque.textContent = 'Erro'
+
+    }
+
+    tr.appendChild(tdForcaAtaque)
+    tr.appendChild(tdFraquezaAtaque)
+    tr.appendChild(tdResistencia)
+    tr.appendChild(tdFraquezaDefesa)
+    tr.appendChild(tdImunidade)
+    pokemonTableBody.appendChild(tr)
+
+
+
+}
+
+// Função responsavel por selecionar o pokemon e adicionalo no time
+async function selecionarPokemonParaTime(pokemon) {
 
     if (cardClicado) {
 
@@ -173,6 +305,8 @@ function selecionarPokemonParaTime(pokemon) {
 
         if (imgDoCard) imgDoCard.src = pokemon.sprites.front_default
         if (nomeDoCard) nomeDoCard.textContent = pokemon.name
+
+        await criarTabelaStatus(pokemon, cardClicado)
     }
 }
 
