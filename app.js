@@ -304,43 +304,45 @@ async function selecionarPokemonParaTime(pokemon) {
         if (nomeDoCard) nomeDoCard.textContent = pokemon.name
 
         await criarTabelaStatus(pokemon, cardClicado)
-        await atualizarSlotMoveSet(pokemon, cardClicado)
+        
+        try {
+           
+            const indexDoCard = cardClicado.id.replace('card-pokemon', '')
+            
+           
+            const slotMoveSet = document.getElementById(`moveset-slot-${indexDoCard}`)
+
+            if (slotMoveSet) {
+              
+                atualizarSlotMoveSet(pokemon, slotMoveSet) 
+            } else {
+                console.error(`Slot de moveset moveset-slot-${indexDoCard} não encontrado!`)
+            }
+        } catch (e) {
+            console.error('Falha ao atualizar o slot de Move Set:', e)
+        }
+
     }
 }
 
-async function atualizarSlotMoveSet(pokemon, cardDoTime){
-    const containerTime = document.getElementById('time-move-set')
+function atualizarSlotMoveSet(pokemon, slotElement){
 
-    const pokemonId = `row-${cardDoTime.id}`
-
-    const containerPokemon = document.createElement('div')
-    containerPokemon.classList.add('pokemon-lista')
-    containerPokemon.id = pokemonId
+    slotElement.innerHTML = ''
 
     const pokemonImg = document.createElement('img')
-    
+    pokemonImg.classList.add('moveset-sprite')
     pokemonImg.src = pokemon.sprites.front_default || 'url_da_sua_imagem_padrao.png'
     pokemonImg.alt = pokemon.name
 
     const nomePokemon = document.createElement('span')
+    nomePokemon.classList.add('moveset-nome')
     nomePokemon.textContent = pokemon.name
 
-    const tiposContainer = document.createElement('div')
-    tiposContainer.classList.add('tipos')
+    const tiposContainer = criarTiposPokemon(pokemon.types)
 
-    pokemon.types.forEach(tipoInfo => {
-
-        const nomeTipo = document.createElement('p')
-        nomeTipo.textContent = tipoInfo.type.name
-
-        nomeTipo.classList.add(`tipo-${tipoInfo.type.name}`)
-        tiposContainer.appendChild(nomeTipo)
-    })    
-
-    containerPokemon.appendChild(pokemonImg)
-    containerPokemon.appendChild(nomePokemon)
-    containerPokemon.appendChild(tiposContainer)
-    containerTime.appendChild(containerPokemon)
+    slotElement.appendChild(pokemonImg)
+    slotElement.appendChild(nomePokemon)
+    slotElement.appendChild(tiposContainer)
 
 }
 
