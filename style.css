@@ -193,7 +193,7 @@ section {
     gap: 10px;
     height: auto;
     width: 100%;
-    padding-inline: 16px;
+    padding-inline: 8px;
 }
 
 .cards-team {
@@ -341,7 +341,7 @@ th {
     background-color: #D9D9D9;
     border-radius: 20px;
     margin-bottom: 4px;
-    width: 160px;
+    max-width: 160px;
 }
 
 .pokemon-lista img {
@@ -701,3 +701,4 @@ th {
 .tipo-dark { background-color: var(--tipo-dark); color: var(--texto-claro); border-radius: 4px;}
 .tipo-steel { background-color: var(--tipo-steel); border-radius: 4px;}
 .tipo-fairy { background-color: var(--tipo-fairy); border-radius: 4px;}
+.slot-ativo { border: 2px solid #00BFFF; }

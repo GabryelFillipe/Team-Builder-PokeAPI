@@ -1,6 +1,7 @@
 'use strict';
 
 let cardClicado = null
+let slotMoveSetAtivo = null
 
 // Função para buscar todos os pokemons registrados na PokeAPI
 async function buscarTodosPokemons() {
@@ -344,9 +345,76 @@ function atualizarSlotMoveSet(pokemon, slotElement){
     slotElement.appendChild(nomePokemon)
     slotElement.appendChild(tiposContainer)
 
+    slotElement.addEventListener('click', () => {
+        processarSelecaoDePokemonParaMoves(pokemon, slotElement)
+    })
+
 }
 
-function abrirModalMoves(pokemon){
+function construirSecaoDeMoves(pokemon) {
+
+    const containerSessaoMoves = document.getElementById('container-secao-moves')
+    
+    if (!containerSessaoMoves) {
+        console.error('ERRO: "container-secao-moves" não encontrado no HTML!')
+        return
+    }
+
+    containerSessaoMoves.innerHTML = ''
+
+    const containerMoveSet = document.createElement('div')
+    containerMoveSet.classList.add('move-set-pokemon')
+
+    const pokemonMove = document.createElement('div')
+    pokemonMove.classList.add('pokemon-move')
+
+    const nomePokemon = document.createElement('p')
+    nomePokemon.textContent = `Movimentos do ${pokemon.name}`
+
+    const containerMoves = document.createElement('div')
+    containerMoves.classList.add('moves')
+
+    for (let i = 0; i < 4; i++) {
+
+        const moveSlot = document.createElement('div')
+        moveSlot.classList.add('move')
+
+        const moveText = document.createElement('span')
+        moveText.textContent = 'Clique para escolher um movimento'
+        
+        moveSlot.addEventListener('click', () => {
+            abrirModalMoves(pokemon, i) 
+        })
+
+   
+        moveSlot.appendChild(moveText)
+        containerMoves.appendChild(moveSlot)
+    }
+    pokemonMove.appendChild(nomePokemon)
+    containerMoveSet.appendChild(pokemonMove)
+    containerMoveSet.appendChild(containerMoves)
+    containerSessaoMoves.appendChild(containerMoveSet)
+}
+
+ function destacarSlotMoveSet(slotElement) {
+
+    if (slotMoveSetAtivo) {
+        slotMoveSetAtivo.classList.remove('slot-ativo') // Use uma classe CSS
+    }
+
+    // Adiciona o destaque no novo slot
+    slotElement.classList.add('slot-ativo')
+
+    // Atualiza a variável de estado
+    slotMoveSetAtivo = slotElement
+
+ }
+
+function processarSelecaoDePokemonParaMoves(pokemon, slotElement) {
+
+    destacarSlotMoveSet(slotElement)
+    
+    construirSecaoDeMoves(pokemon)
 
 }
 
