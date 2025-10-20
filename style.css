@@ -675,7 +675,6 @@ th {
 
 @media (min-width: 1024px) {
     .team {
-        display: column;
         padding-left: 40px;
     }
 
@@ -685,16 +684,22 @@ th {
     }
 
     table {
-    min-width: 1200px;
+    min-width: 900px;
     border-collapse: collapse;
 }
 
     .cards-team {
         gap: 9vw;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
     }
 
     .card-pokemon {
-        width: 250px;
+        width: 20vw;
+        height: 20dvh;
+    }
+    .bg-pokeball{
+        width: 30vw;
     }
 
     .conteudo-sessao {
@@ -737,11 +742,19 @@ th {
 
     .move-set-pokemon {
         width: 50%;
-        height: 200px;
+        height: 200px;padding-block: 8px;
+    }
+
+    .container-secao-moves{
+        width: 80%;
+        display: flex;
+        justify-content: center;
     }
 
     .move {
-        width: 150px;
+        width: 15vw;
+        display: flex;
+        justify-content: center;
     }
 
     .move span {
