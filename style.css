@@ -742,7 +742,8 @@ th {
 
     .move-set-pokemon {
         width: 50%;
-        height: 200px;padding-block: 8px;
+        height: 200px;
+        padding-block: 8px;
     }
 
     .container-secao-moves{
@@ -762,6 +763,16 @@ th {
     }
     .status-time{
         align-items: center;
+    }
+    .move-preenchido{
+        display: flex;
+        justify-content: space-around;
+    }
+    .move-preenchido span{
+        font-size: 12px;
+    }
+    .modal-tipo-tag{
+        width: 5vw;
     }
 }
 
