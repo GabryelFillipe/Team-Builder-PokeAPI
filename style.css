@@ -269,8 +269,6 @@ section {
 .table {
     position: relative;
     overflow-x: auto;
-
-
 }
 
 table {
@@ -311,14 +309,15 @@ th {
 .time-escolhido {
     background-color: white;
     border-radius: 20px;
-    height: 168px;
+    height: auto;
     width: 95%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 24px;
     padding-right: 16px;
+    padding-block: 8px;
+    gap: 8px;
 }
 
 .time-name {
@@ -370,9 +369,9 @@ th {
 }
 
 .time {
-    display: column;
-    columns: 2;
-    gap: 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2vw;
     width: 90%;
 }
 
@@ -389,7 +388,11 @@ th {
     padding-block: 16px;
     padding-inline: 16px;
 }
-
+.modal-tipo-tag{
+    
+    margin: 0;
+    padding: 0;
+}
 .pokemon-move {
     background-color: white;
     border: 2px solid #ED5564;
@@ -530,14 +533,34 @@ th {
 
 .modal-tipo-tag, 
 .tipos-tabela p { 
-    display: inline-block;
-    padding: 4px 10px;
-    border-radius: 4%;
+    display: flex;
+    width: 15vw;
+    text-align: center;
+    justify-content: center;
+    border-radius: 4px;
     font-size: 14px;
     font-weight: bold;
     text-transform: capitalize;
+    padding-inline: 4px;
+    padding-block: 4px;
+    color: var(--texto-claro);
     margin: 2px;
-    color: var(--texto-claro); 
+}
+
+#time-move-set .modal-tipo-tag, 
+.tipos-tabela p { 
+    display: flex;
+    width: 8vw;
+    text-align: center;
+    justify-content: center;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: capitalize;
+    padding-inline: 4px;
+    /* padding-block: 4px; */
+    color: var(--texto-claro);
+    margin: 4px;
 }
 
 #time-move-set .modal-tipos {
@@ -608,34 +631,37 @@ th {
         display: flex;
         flex-direction: column;
         height: auto;
-        width: 50%;
+        width: 95%;
     }
 
     .time {
         display: flex;
         flex-direction: column;
         padding-bottom: 4px;
-        gap: 0;
+        gap: 8px;
     }
 
     .pokemon-lista {
-        width: 264px;
+        width: 80vw;
+        display: flex;
         justify-content: space-around;
-        height: 32px;
+        height: auto;
+        margin: 0;
+        padding-right: 100px;
     }
 
     .pokemon-lista span {
-        font-size: 16px;
+        font-size: 20px;
     }
 
     .pokemon-lista img {
-        width: 28px;
-        height: 28px
+        width: 50px;
+        height: 50px;
     }
 
     .move-set-pokemon {
         width: 50%;
-        height: 200px;
+        height: 20px;
     }
 
     .move {
@@ -652,6 +678,16 @@ th {
         display: column;
         padding-left: 40px;
     }
+
+    .table {
+    position: relative;
+    overflow-x: auto;
+    }
+
+    table {
+    min-width: 1200px;
+    border-collapse: collapse;
+}
 
     .cards-team {
         gap: 9vw;
@@ -671,26 +707,27 @@ th {
 
     .time-escolhido {
         display: flex;
-        flex-direction: column;
+        /* flex-direction: column; */
+        align-items: center;
+        padding: 0;
         height: auto;
-        width: 50%;
+        width: 90%;
     }
 
     .time {
-        display: flex;
-        flex-direction: column;
-        padding-bottom: 4px;
-        gap: 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        place-items: center;
     }
 
     .pokemon-lista {
-        width: 264px;
+        width: 35vw;
         justify-content: space-around;
         height: 32px;
     }
 
     .pokemon-lista span {
-        font-size: 16px;
+        font-size: 20px;
     }
 
     .pokemon-lista img {
