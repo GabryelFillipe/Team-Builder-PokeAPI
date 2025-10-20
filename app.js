@@ -2,6 +2,7 @@
 
 let cardClicado = null
 let slotMoveSetAtivo = null
+let slotDeMoveAtivo = null
 
 // Função para buscar todos os pokemons registrados na PokeAPI
 async function buscarTodosPokemons() {
@@ -346,9 +347,182 @@ function atualizarSlotMoveSet(pokemon, slotElement){
     slotElement.appendChild(tiposContainer)
 
     slotElement.addEventListener('click', () => {
-        processarSelecaoDePokemonParaMoves(pokemon, slotElement)
+        selecaoDePokemonParaMoves(pokemon, slotElement)
     })
 
+}
+
+function abrirModalMoves(listaDeMoves){
+
+    const modalFundo = document.createElement('div')
+
+    modalFundo.classList.add('modal-fundo', 'modal-fundo-moves')
+
+    const modalContainer = document.createElement('div')
+    modalContainer.classList.add('modal-container')
+
+    const barraDeBusca = document.createElement('input')
+    barraDeBusca.type = 'search'
+    barraDeBusca.placeholder = 'Pesquisar movimento...'
+    barraDeBusca.classList.add('modal-barra-busca')
+
+    const listaMovesWrapper = document.createElement('div')
+    listaMovesWrapper.classList.add('modal-cards-wrapper')
+
+
+    listaDeMoves.forEach(moveInfo => {
+   
+        const itemMove = criarMovesParaModal(moveInfo)
+        listaMovesWrapper.appendChild(itemMove)
+    })
+
+
+    barraDeBusca.addEventListener('input', () => {
+        const termoBusca = barraDeBusca.value.toLowerCase()
+        const todosOsItens = listaMovesWrapper.querySelectorAll('.move-item-modal')
+        
+        todosOsItens.forEach(item => {
+            if (item.dataset.nome.includes(termoBusca)) {
+                item.style.display = 'block' 
+            } else {
+                item.style.display = 'none'
+            }
+        })
+    })
+
+
+    modalFundo.addEventListener('click', (e) => {
+        if (e.target === modalFundo) {
+            modalFundo.remove()
+            slotDeMoveAtivo = null
+        }
+    });
+
+    modalContainer.appendChild(barraDeBusca)
+    modalContainer.appendChild(listaMovesWrapper)
+    modalFundo.appendChild(modalContainer)
+    document.body.appendChild(modalFundo)
+
+}
+
+async function carregarTipoDoMove(urlDoMove, placeholderElement) {
+    try {
+        const resposta = await fetch(urlDoMove)
+        if (!resposta.ok) throw new Error('Falha no fetch')
+        
+        const dadosDoMove = await resposta.json()
+        const tipoDoMove = dadosDoMove.type.name
+
+        placeholderElement.innerHTML = '' 
+        
+
+        const tagDeTipo = criarTagsDeTipoPorNome([tipoDoMove])
+        placeholderElement.appendChild(tagDeTipo)
+
+    } catch (error) {
+        console.warn(`Falha ao carregar tipo do move ${urlDoMove}:`, error)
+        placeholderElement.textContent = 'N/A'
+    }
+}
+
+function criarMovesParaModal(moveInfo) {
+   const moveName = moveInfo.move.name
+    const moveUrl = moveInfo.move.url
+
+    const move = document.createElement('button')
+    move.classList.add('move-item-modal')
+    move.dataset.nome = moveName
+
+
+    const moveIcon = document.createElement('img')
+    moveIcon.classList.add('move-modal-icon')
+
+    moveIcon.src = './img/pokeball.png'
+    moveIcon.alt = 'ícone de movimento'
+
+    const moveNameSpan = document.createElement('span')
+    moveNameSpan.classList.add('move-modal-name')
+    moveNameSpan.textContent = moveName.replace('-', ' ')
+
+
+    const typePlaceholder = document.createElement('div')
+    typePlaceholder.classList.add('move-modal-type-placeholder')
+    typePlaceholder.textContent = '...'
+
+
+    move.appendChild(moveIcon)
+    move.appendChild(moveNameSpan)
+    move.appendChild(typePlaceholder)
+
+   
+    move.addEventListener('click', () => {
+        processarMoves(moveUrl)
+    })
+   
+    carregarTipoDoMove(moveUrl, typePlaceholder)
+
+    return move
+}
+
+async function processarMoves(urlDoMove) {
+  
+    if (slotDeMoveAtivo) {
+        slotDeMoveAtivo.innerHTML = '<span>Carregando...</span>'
+    }
+
+    try {
+        const resposta = await fetch(urlDoMove)
+        if (!resposta.ok) throw new Error('Falha no fetch do movimento')
+        
+        const dadosDoMove = await resposta.json()
+
+        popularSlotComMove(dadosDoMove)
+
+    } catch (error) {
+        console.error("Falha ao buscar detalhes do movimento:", error)
+        if (slotDeMoveAtivo) {
+            slotDeMoveAtivo.textContent = 'Erro ao carregar'
+        }
+    } finally {
+     
+        const modal = document.querySelector('.modal-fundo-moves')
+        if (modal) modal.remove()
+    }
+}
+
+function popularSlotComMove(dadosDoMove) {
+  
+    if (!slotDeMoveAtivo) 
+        return
+
+    slotDeMoveAtivo.innerHTML = ''
+    slotDeMoveAtivo.classList.add('move-preenchido')
+
+    const nomeMove = document.createElement('span')
+    nomeMove.textContent = dadosDoMove.name.replace('-', ' ')
+    nomeMove.classList.add('move-nome')
+    slotDeMoveAtivo.appendChild(nomeMove)
+
+    const tipoTag = criarTagsDeTipoPorNome([dadosDoMove.type.name])
+    slotDeMoveAtivo.appendChild(tipoTag)
+
+
+    const detalhesMove = document.createElement('div')
+    detalhesMove.classList.add('move-detalhes')
+
+    const poderMove = document.createElement('span')
+
+    poderMove.textContent = `Poder: ${dadosDoMove.power || '--'}`;
+
+    const accMove = document.createElement('span')
+    accMove.textContent = `Prec.: ${dadosDoMove.accuracy || '--'}`
+
+    detalhesMove.appendChild(poderMove)
+    detalhesMove.appendChild(accMove)
+    slotDeMoveAtivo.appendChild(detalhesMove)
+
+
+    slotDeMoveAtivo = null
 }
 
 function construirSecaoDeMoves(pokemon) {
@@ -383,7 +557,10 @@ function construirSecaoDeMoves(pokemon) {
         moveText.textContent = 'Clique para escolher um movimento'
         
         moveSlot.addEventListener('click', () => {
-            abrirModalMoves(pokemon, i) 
+
+            slotDeMoveAtivo = moveSlot
+
+            abrirModalMoves(pokemon.moves) 
         })
 
    
@@ -410,7 +587,7 @@ function construirSecaoDeMoves(pokemon) {
 
  }
 
-function processarSelecaoDePokemonParaMoves(pokemon, slotElement) {
+function selecaoDePokemonParaMoves(pokemon, slotElement) {
 
     destacarSlotMoveSet(slotElement)
     

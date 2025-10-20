@@ -16,7 +16,7 @@ li {
 }
 
 :root {
-    --default-padding: 28px;
+    --default-padding: 14px;
 
     --tipo-normal: #A8A878;
     --tipo-fire: #F08030;
@@ -315,9 +315,10 @@ th {
     width: 95%;
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-direction: column;
-    padding-block: 12px;
     gap: 24px;
+    padding-right: 16px;
 }
 
 .time-name {
@@ -341,12 +342,12 @@ th {
     background-color: #D9D9D9;
     border-radius: 20px;
     margin-bottom: 4px;
-    max-width: 160px;
+    width: 40vw;
 }
 
 .pokemon-lista img {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
 }
 
 .pokemon-lista span {
@@ -542,6 +543,38 @@ th {
 #time-move-set .modal-tipos {
     display: flex;
     width: 50px;             
+}
+
+.modal-cards-wrapper{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.move-item-modal{
+    display: flex;
+    border-radius: 10px;
+    justify-content: space-around;
+    align-items: center;
+    gap: 4px;
+    padding-inline: 4px;
+    padding-block: 4px;
+}
+.move-item-modal img{
+    width: 25px;
+    height: 25px;
+}
+.move-item-modal span{
+    font-size: 12px;
+}
+
+.move-preenchido{
+    display: flex;
+    justify-content: space-around;
+}
+.move-preenchido span{
+    font-size: 8px;
+}
+.move-detalhes{
+    display: flex;
 }
 
 @media (min-width: 768px) {
